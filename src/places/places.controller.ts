@@ -16,7 +16,7 @@ export class PlacesController {
   @Get(':name')
   async findOne(@Param('name') name: string) {
     const apiUrl =
-      'https://openapi.naver.com/v1/search/blog?query=' + encodeURI(name);
+      'https://openapi.naver.com/v1/search/local.json?query=' + encodeURI(name);
 
     const options = {
       headers: {
