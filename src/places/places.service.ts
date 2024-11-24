@@ -1,17 +1,17 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Place } from './interfaces/place.interface';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { HttpService } from '@nestjs/axios';
-import { firstValueFrom, catchError, find, from } from 'rxjs';
+import { firstValueFrom, catchError } from 'rxjs';
 
 @Injectable()
 export class PlacesService {
   private readonly logger = new Logger(PlacesService.name);
   constructor(private readonly httpService: HttpService) {}
 
-  async findOne(
+  async findPlaceByName(
     apiUrl: string,
-    options: {
+    options?: {
       headers: { [key: string]: string };
     },
   ): Promise<Place[]> {
