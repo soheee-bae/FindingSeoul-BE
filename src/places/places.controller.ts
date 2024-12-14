@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, Param } from '@nestjs/common';
 import { PlacesService } from './places.service';
 
 @Controller('/places')
@@ -18,8 +18,8 @@ export class PlacesController {
 
   @Get(':name')
   async findPlaceById(
+    @Param('name') name: string,
     @Query('station') station: string,
-    @Query('name') name: string,
     @Query('id') id: number,
     @Query('displayCount') displayCount: number = 5,
   ) {
