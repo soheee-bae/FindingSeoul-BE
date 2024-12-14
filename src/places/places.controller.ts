@@ -5,16 +5,27 @@ import { PlacesService } from './places.service';
 export class PlacesController {
   constructor(private readonly placesService: PlacesService) {}
 
-  @Get(':name')
-  async findPlaceByName(
-    @Query('name') name: string,
-    @Query('keyword') keyword: string,
-    @Query('page') page: number = 1,
-    @Query('displayCount') displayCount: number = 5,
+  @Get()
+  async findPlacesByStation(
+    @Query('station') station: string,
+    @Query('displayCount') displayCount: number = 75,
   ) {
-    const apiUrl = `https://m.map.naver.com/search2/searchMore.naver?query=${encodeURI(name)},${keyword},&sm=clk&style=v5&page=${page}&displayCount=${displayCount}&type=SITE_1
+    const apiUrl = `https://m.map.naver.com/search2/searchMore.naver?query=${encodeURI(station)}&sm=clk&style=v5&page=1&displayCount=${displayCount}&type=SITE_1
 `;
 
-    return await this.placesService.findPlaceByName(apiUrl);
+    return await this.placesService.findPlacesByStation(apiUrl);
+  }
+
+  @Get(':name')
+  async findPlaceById(
+    @Query('station') station: string,
+    @Query('name') name: string,
+    @Query('id') id: number,
+    @Query('displayCount') displayCount: number = 5,
+  ) {
+    console.log('findPlaceById');
+    const apiUrl = `https://m.map.naver.com/search2/searchMore.naver?query=${encodeURI(station)},${encodeURI(name)}&sm=clk&style=v5&page=1&displayCount=${displayCount}&type=SITE_1
+  `;
+    return await this.placesService.findPlaceById(apiUrl, id);
   }
 }
