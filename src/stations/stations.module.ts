@@ -14,4 +14,4 @@ import { HttpModule } from '@nestjs/axios';
   providers: [StationsService],
   exports: [StationsService],
 })
-export class PlacesModule {}
+export class StationsModule {}

@@ -9,7 +9,10 @@ export class StationsService {
   private readonly logger = new Logger(StationsService.name);
   constructor(private readonly httpService: HttpService) {}
 
-  async findStationsByArea(apiUrl: string): Promise<Station[]> {
+  async findStationsByArea(
+    apiUrl: string,
+    station: string,
+  ): Promise<Station[]> {
     const { data } = await firstValueFrom(
       this.httpService.get(apiUrl).pipe(
         catchError((error: AxiosError) => {
@@ -19,6 +22,6 @@ export class StationsService {
       ),
     );
 
-    return data;
+    return data.data.find((s) => s.자치구 === station);
   }
 }
