@@ -1,5 +1,10 @@
 export interface Station {
-  역개수: number;
-  자치구: string;
-  해당역(호선): string;
+  name: string;
+  subwayLine: number;
+}
+
+export interface Stations {
+  totalCount: number;
+  name: string;
+  stations: Station[];
 }

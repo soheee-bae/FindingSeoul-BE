@@ -23,7 +23,6 @@ export class PlacesController {
     @Query('id') id: number,
     @Query('displayCount') displayCount: number = 5,
   ) {
-    console.log('findPlaceById');
     const apiUrl = `https://m.map.naver.com/search2/searchMore.naver?query=${encodeURI(station)},${encodeURI(name)}&sm=clk&style=v5&page=1&displayCount=${displayCount}&type=SITE_1
   `;
     return await this.placesService.findPlaceById(apiUrl, id);
