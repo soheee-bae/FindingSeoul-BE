@@ -24,7 +24,7 @@ export class PlacesService {
       ),
     );
 
-    const list = data;
+    const list = data.result.site.list;
     return list;
   }
 }
