@@ -24,22 +24,7 @@ export class PlacesService {
       ),
     );
 
-    const list = data.result.site.list;
+    const list = data;
     return list;
-  }
-
-  async findPlaceById(apiUrl: string, id: number): Promise<Place> {
-    const { data } = await firstValueFrom(
-      this.httpService.get(apiUrl).pipe(
-        catchError((error: AxiosError) => {
-          this.logger.error(error.response.data);
-          throw 'Unabled to fetch place from findPlaceById method';
-        }),
-      ),
-    );
-
-    const list = data.result.site.list;
-    const result = list.find((item) => item.id === id);
-    return result;
   }
 }
