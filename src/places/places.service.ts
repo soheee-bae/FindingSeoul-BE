@@ -25,7 +25,27 @@ export class PlacesService {
     );
 
     const noResult = data.result.totalCount === 0;
-    const list = noResult ? [] : data.result.site.list;
+    const result = data.result.site.list.map((item) => ({
+      ...item,
+      id: +item.id,
+      distance: +item.distance,
+      menuInfo: item.menuInfo
+        ? item.menuInfo.split('|').map((menu, idx) => {
+            const splitedMenu = menu.split(/(\d+)/);
+
+            return {
+              id: idx,
+              name: splitedMenu.shift().trim(),
+              price: splitedMenu.join('').trim(),
+            };
+          })
+        : undefined,
+      x: +item.x,
+      y: +item.y,
+      rank: +item.rank,
+    }));
+
+    const list = noResult ? [] : result;
     return list;
   }
 }
