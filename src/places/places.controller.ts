@@ -13,7 +13,10 @@ export class PlacesController {
     @Query('search') search: string,
     @Query('siteSort') siteSort: number = 0, // relevant = 0, distance = 1
   ) {
-    const apiUrl = `https://m.map.naver.com/search2/searchMore.naver?query=${encodeURI(station)}${search ? `, ${search}` : ''}&type=${type}&sm=clk&style=v5&page=1&displayCount=${displayCount}&siteSort=${siteSort}`;
+    const stationLabel = `${station}역`;
+    const apiUrl = search
+      ? `https://m.map.naver.com/search2/searchMore.naver?query=${encodeURI(stationLabel)}${search ? `, ${search}` : ''}&sm=shistory&style=v5`
+      : `https://m.map.naver.com/search2/interestSpotMore.naver?type=${type}&siteSort=${siteSort}&sm=clk&page=1&displayCount=${displayCount}`;
 
     return await this.placesService.findPlacesByStation(apiUrl);
   }
