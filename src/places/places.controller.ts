@@ -9,17 +9,36 @@ export class PlacesController {
   async findPlacesByStation(
     @Query('station') station: string,
     @Query('displayCount') displayCount: number = 75,
-    @Query('type') type: string,
+    @Query('baseCategory') baseCategory: string,
+    @Query('subCategory') subCategory: string,
     @Query('search') search: string,
     @Query('siteSort') siteSort: number = 0, // relevant = 0, distance = 1
   ) {
-    // const apiUrl = search
-    //   ? `https://m.map.naver.com/search2/searchMore.naver?query=${encodeURI(stationLabel)}${search ? `, ${search}` : ''}&siteSort=${siteSort}&sm=shistory&style=v5`
-    //   : `https://m.map.naver.com/search2/interestSpotMore.naver?type=${type}&siteSort=${siteSort}&sm=clk&page=1&displayCount=${displayCount}`;
+    const query = search
+      ? `${encodeURI(station)} ${search}`
+      : `${encodeURI(station)} ${baseCategory} ${subCategory}`;
 
-    const stationLabel = `${station}역`;
+    const apiUrl = `https://m.map.naver.com/search2/searchMore.naver?query=${query}&sm=shistory&style=v5&page=1&displayCount=${displayCount}`;
 
-    const apiUrl = `https://m.map.naver.com/search2/searchMore.naver?query=${encodeURI(stationLabel)}${search ? `, ${search}` : ''}&siteSort=${siteSort}&sm=shistory&style=v5&page=1&displayCount=${displayCount}`;
-    return await this.placesService.findPlacesByStation(apiUrl);
+    return siteSort
+      ? await this.placesService.findPlacesByStation(
+          apiUrl + `&siteSort=${siteSort}`,
+        )
+      : await this.placesService
+          .findPlacesByStation(apiUrl + `&siteSort=0`)
+          .then(async (result) => {
+            const data = await this.placesService.findPlacesByStation(
+              apiUrl + `&siteSort=1`,
+            );
+            return [...result, ...data];
+          });
   }
 }
+
+// (sitesort 1 + sitesort 0) - common = result
+
+// Filter :
+// 우장산(station) + base category + sub category (if exist) // clear search
+
+// search :
+// 우장산(station) + search + base category// clear sub category
