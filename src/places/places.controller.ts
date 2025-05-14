@@ -16,8 +16,11 @@ export class PlacesController {
   ) {
     const query = search
       ? `${encodeURI(station)} ${search}`
-      : `${encodeURI(station)} ${baseCategory} ${subCategory}`;
+      : baseCategory && subCategory
+        ? `${encodeURI(station)} ${baseCategory} ${subCategory}`
+        : `${encodeURI(station)} ${baseCategory}`;
 
+    console.log(query);
     const apiUrl = `https://m.map.naver.com/search2/searchMore.naver?query=${query}&sm=shistory&style=v5&page=1&displayCount=${displayCount}`;
 
     return siteSort
